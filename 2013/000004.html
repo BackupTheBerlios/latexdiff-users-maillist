@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Latexdiff-users] textual circumflex accents,	not for superscript
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/latexdiff-users/2013/index.html" >
+   <LINK REL="made" HREF="mailto:latexdiff-users%40lists.berlios.de?Subject=Re%3A%20%5BLatexdiff-users%5D%20textual%20circumflex%20accents%2C%0A%09not%20for%20superscript&In-Reply-To=%3C519F5D85.7040308%40op3ft.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000003.html">
+   <LINK REL="Next"  HREF="000005.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Latexdiff-users] textual circumflex accents,	not for superscript</H1>
+    <B>Wa&#239;l YAHYAOUI</B> 
+    <A HREF="mailto:latexdiff-users%40lists.berlios.de?Subject=Re%3A%20%5BLatexdiff-users%5D%20textual%20circumflex%20accents%2C%0A%09not%20for%20superscript&In-Reply-To=%3C519F5D85.7040308%40op3ft.org%3E"
+       TITLE="[Latexdiff-users] textual circumflex accents,	not for superscript">wail.yahyaoui at op3ft.org
+       </A><BR>
+    <I>Fri May 24 14:31:01 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000003.html">[Latexdiff-users] textual circumflex accents,	not for superscript
+</A></li>
+        <LI>Next message: <A HREF="000005.html">[Latexdiff-users] textual circumflex accents,	not for superscript
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear Frederik,
+
+Thanks for your quick answer.
+
+-------- Original Message  --------
+Subject: Re: [Latexdiff-users] textual circumflex accents, not for 
+superscript
+From: Frederik Tilmann &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/latexdiff-users">tilmann at gfz-potsdam.de</A>&gt;
+To: For exchange between users of latexdiff 
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/latexdiff-users">latexdiff-users at lists.berlios.de</A>&gt;
+Date: Ven. 24 Mai 2013 12:58:33 CEST
+
+&gt;<i> Dear Wail Yahyaoui
+</I>&gt;<i>
+</I>&gt;<i> thanks for this report and your suggested solution.  You can try to add
+</I>&gt;<i> to list of safe commands by using --append-safecmd option but I am not
+</I>&gt;<i> sure if it will work with one-letter commands, as they get special
+</I>&gt;<i> treatment.  Really this is a bug and calls for a proper fix.
+</I>&gt;<i>
+</I>&gt;<i> I think your solution as it stands  will also break normal use of ^ for
+</I>&gt;<i> indicating superscript because the replacement will gobble up the
+</I>&gt;<i> preceding non-backslash character.  But this can be fixed
+</I>&gt;<i> straightforwardly.   Give me a few days and I will work on a fix.
+</I>&gt;<i>
+</I>&gt;<i> Frederik
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 24/05/13 12:32, Wa&#239;l YAHYAOUI wrote:
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm trying to make a diff between files containing circumflex accents
+</I>&gt;&gt;<i> (French language).
+</I>&gt;&gt;<i> They can be declaredusing the command \^{e}
+</I>&gt;&gt;<i> However, it seems that latexdiff treats them as a subscript.
+</I>&gt;&gt;<i> Forexample, a diff between the file
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i> \documentclass{article}
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> \begin{document}
+</I>&gt;&gt;<i> Hello world!
+</I>&gt;&gt;<i> \end{document}
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i> and
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i> \documentclass{article}
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> \begin{document}
+</I>&gt;&gt;<i> Hello w\^{o}rld!
+</I>&gt;&gt;<i> \end{document}
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> outputs (cut to the relevant part) :
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i> \begin{document}
+</I>&gt;&gt;<i> Hello \DIFdelbegin \DIFdel{world}\DIFdelend \DIFaddbegin
+</I>&gt;&gt;<i> \DIFadd{w}\\\DIFadd{SUPERSCRIPT}{\DIFadd{o}}\DIFadd{rld}\DIFaddend !
+</I>&gt;&gt;<i> \end{document}
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ifound the following lines in the script, starting from line 1926 :
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i>       # Convert ^n into \SUPERSCRIPTNB{n} and ^{nnn} into \SUPERSCRIPT{nn}
+</I>&gt;&gt;<i>       1 while s/\^([^{\\]|\\\w+)/\\SUPERSCRIPTNB{$1}/g ;
+</I>&gt;&gt;<i>       1 while s/\^{($pat6)}/\\SUPERSCRIPT{$1}/g ;
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So I tried to add an exception for circumflex accents preceded by a \ :
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i>       # Convert ^n into \SUPERSCRIPTNB{n} and ^{nnn} into \SUPERSCRIPT{nn}
+</I>&gt;&gt;<i>       1 while s/[^\\]\^([^{\\]|\\\w+)/\\SUPERSCRIPTNB{$1}/g ;
+</I>&gt;&gt;<i>       1 while s/[^\\]\^{($pat6)}/\\SUPERSCRIPT{$1}/g ;
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But the problem is that the result is out of the \DIFFadd command
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i> Hello \DIFdelbegin \DIFdel{world}\DIFdelend \DIFaddbegin
+</I>&gt;&gt;<i> \DIFadd{w}\^{o}\DIFadd{rld}\DIFaddend !
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is there a fix for that problem that would allow the circumflex accent
+</I>&gt;&gt;<i> to appear as normal text?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Wail Yahyaoui
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Latexdiff-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/latexdiff-users">Latexdiff-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/latexdiff-users">https://lists.berlios.de/mailman/listinfo/latexdiff-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000003.html">[Latexdiff-users] textual circumflex accents,	not for superscript
+</A></li>
+	<LI>Next message: <A HREF="000005.html">[Latexdiff-users] textual circumflex accents,	not for superscript
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/latexdiff-users">More information about the Latexdiff-users
+mailing list</a><br>
+</body></html>

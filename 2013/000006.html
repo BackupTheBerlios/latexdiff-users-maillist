@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Latexdiff-users] textual circumflex accents,	not for superscript
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/latexdiff-users/2013/index.html" >
+   <LINK REL="made" HREF="mailto:latexdiff-users%40lists.berlios.de?Subject=Re%3A%20%5BLatexdiff-users%5D%20textual%20circumflex%20accents%2C%0A%09not%20for%20superscript&In-Reply-To=%3C51A28911.9020507%40gfz-potsdam.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000005.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Latexdiff-users] textual circumflex accents,	not for superscript</H1>
+    <B>Frederik Tilmann</B> 
+    <A HREF="mailto:latexdiff-users%40lists.berlios.de?Subject=Re%3A%20%5BLatexdiff-users%5D%20textual%20circumflex%20accents%2C%0A%09not%20for%20superscript&In-Reply-To=%3C51A28911.9020507%40gfz-potsdam.de%3E"
+       TITLE="[Latexdiff-users] textual circumflex accents,	not for superscript">tilmann at gfz-potsdam.de
+       </A><BR>
+    <I>Mon May 27 00:13:37 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000005.html">[Latexdiff-users] textual circumflex accents,	not for superscript
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6">[ date ]</a>
+              <a href="thread.html#6">[ thread ]</a>
+              <a href="subject.html#6">[ subject ]</a>
+              <a href="author.html#6">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 24/05/13 16:50, Uwe Brauer wrote:
+&gt;&gt;&gt;<i> &quot;Wa&#239;l&quot; == Wa&#239;l YAHYAOUI &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/latexdiff-users">wail.yahyaoui at op3ft.org</A>&gt; writes:
+</I>&gt;<i>
+</I>&gt;<i>     &gt; Hello,
+</I>&gt;<i>     &gt; I'm trying to make a diff between files containing circumflex accents
+</I>&gt;<i>     &gt; (French language).
+</I>&gt;<i>     &gt; They can be declaredusing the command \^{e}
+</I>&gt;<i>     &gt; However, it seems that latexdiff treats them as a subscript.
+</I>&gt;<i>     &gt; Forexample, a diff between the file
+</I>&gt;<i>     &gt; ----
+</I>&gt;<i>
+</I>&gt;<i> What's about latin-1 or UTF-8 coding??? I changed your example
+</I>&gt;<i> to
+</I>&gt;<i>
+</I>&gt;<i> Hello w&#244;rld!
+</I>&gt;<i>
+</I>&gt;<i> (Using latin-1) coding and used latexdiff.
+</I>&gt;<i>
+</I>&gt;<i> Then the symbol was not longer as a subscript, however
+</I>&gt;<i> \usepackage[latin1]{inputenc}
+</I>&gt;<i> needs to be added
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+Here is the correct patch for the change as outline by you but now not 
+breaking usage of ^ to mark superscript (a similar problem occurs with _ 
+and \_, and this is also fixed below (ignore the line numbers which 
+refer to an unreleased intermediate version - it's the same place you 
+were trying to patch)
+
+@@ -1677,11 +1678,11 @@
+      s/(\\verb\*?)(\S)(.*?)\2/&quot;${1}{&quot;. 
+tohash(\%verbhash,&quot;${2}${3}${2}&quot;) .&quot;}&quot;/esg;
+      s/\\begin\{(verbatim\*?)\}(.*?)\\end\{\1\}/&quot;\\${1}{&quot;. 
+tohash(\%verbhash,&quot;${2}&quot;) . &quot;}&quot;/esg;
+      # Convert _n or _\cmd into \SUBSCRIPTNB{n} or \SUBSCRIPTNB{\cmd} 
+and _{nnn} into \SUBSCRIPT{nn}
+-    1 while s/_([^{\\]|\\\w+)/\\SUBSCRIPTNB{$1}/g ;
+-    1 while s/_{($pat6)}/\\SUBSCRIPT{$1}/g ;
++    1 while s/(?&lt;!\\)_([^{\\]|\\\w+)/\\SUBSCRIPTNB{$1}/g ;
++    1 while s/(?&lt;!\\)_{($pat6)}/\\SUBSCRIPT{$1}/g ;
+      # Convert ^n into \SUPERSCRIPTNB{n} and ^{nnn} into \SUPERSCRIPT{nn}
+-    1 while s/\^([^{\\]|\\\w+)/\\SUPERSCRIPTNB{$1}/g ;
+-    1 while s/\^{($pat6)}/\\SUPERSCRIPT{$1}/g ;
++    1 while s/(?&lt;!\\)\^([^{\\]|\\\w+)/\\SUPERSCRIPTNB{$1}/g ;
++    1 while s/(?&lt;!\\)\^{($pat6)}/\\SUPERSCRIPT{$1}/g ;
+      # Convert $$ $$ into \begin{DOLLARDOLLAR} \end{DOLLARDOLLAR}
+      s/\$\$(.*?)\$\$/\\begin{DOLLARDOLLAR}$1\\end{DOLLARDOLLAR}/sg;
+      # Convert \[ \] into \begin{SQUAREBRACKET} \end{SQUAREBRACKET}
+
+(NB patch will be included in release 1.0.3)
+
+Unfortunately your follow-up problem of highlighting changed accented 
+characters turned out to be less straightforward to solve than I had 
+anticipated.  Because this is usually only a minor inconvenience I have 
+stopped attempts to fix that particular problem for now.  After the 
+patch above has been applied the following will also work:
+
+Hello w\^orld!
+
+Regards
+Frederik
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000005.html">[Latexdiff-users] textual circumflex accents,	not for superscript
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6">[ date ]</a>
+              <a href="thread.html#6">[ thread ]</a>
+              <a href="subject.html#6">[ subject ]</a>
+              <a href="author.html#6">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/latexdiff-users">More information about the Latexdiff-users
+mailing list</a><br>
+</body></html>

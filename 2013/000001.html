@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Latexdiff-users] latexdiff: request for feature bibliography	diff highlight
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/latexdiff-users/2013/index.html" >
+   <LINK REL="made" HREF="mailto:latexdiff-users%40lists.berlios.de?Subject=Re%3A%20%5BLatexdiff-users%5D%20latexdiff%3A%20request%20for%20feature%20bibliography%0A%09diff%20highlight&In-Reply-To=%3C5191E777.5070602%40gfz-potsdam.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000002.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Latexdiff-users] latexdiff: request for feature bibliography	diff highlight</H1>
+    <B>Frederik Tilmann</B> 
+    <A HREF="mailto:latexdiff-users%40lists.berlios.de?Subject=Re%3A%20%5BLatexdiff-users%5D%20latexdiff%3A%20request%20for%20feature%20bibliography%0A%09diff%20highlight&In-Reply-To=%3C5191E777.5070602%40gfz-potsdam.de%3E"
+       TITLE="[Latexdiff-users] latexdiff: request for feature bibliography	diff highlight">tilmann at gfz-potsdam.de
+       </A><BR>
+    <I>Tue May 14 09:27:51 CEST 2013</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000002.html">[Latexdiff-users] textual circumflex accents, not for superscript
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear Francois
+
+it sort of does this already, though not completed automatised:
+
+You need to run bibtex on the old and new file, and then compare the bbl 
+files, e.g. for pdflatex
+
+pdflatex text-old.tex
+bibtex text-old
+pdflatex text-new.tex
+bibtex text-new
+
+latexdiff text-old.bbl text-new.bbl &gt; text-diff.bbl
+latexdiff text-old.tex text-new.tex &gt; text-diff.tex
+
+pdflatex text-diff.tex
+pdflatex text-diff.tex
+
+should give you the required result.
+
+The wrapper script &quot;latexdiff-vc&quot; with --pdf or --postscript option will 
+run this sequence in one go.
+
+Regards
+Frederik
+
+
+
+On 14/05/13 08:37, Francois Berenger wrote:
+&gt;<i> Dear Dr. Tilmann,
+</I>&gt;<i>
+</I>&gt;<i> Would it be possible to have latexdiff
+</I>&gt;<i> also highlight changes into the bibliography section
+</I>&gt;<i> of an article?
+</I>&gt;<i>
+</I>&gt;<i> That would be very useful to reviewers
+</I>&gt;<i> of edited versions of a manuscript.
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Francois.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+-- 
+
+Frederik Tilmann
+Helmholtz-Zentrum Potsdam               alt.:
+Deutsches GeoForschungsZentrum          Freie Universit&#228;t Berlin
+Sektion 2.4, Seismologie                Fachrichtung Geophysik
+Telegrafenberg 1                        Malteserstr. 74 - 100
+14473 Potsdam                           12249 Berlin
+Germany
+
+Building A3                             Room D 105
+Tel.:    +49 331-288 1240               Tel.: +49 30 838-70587
+Fax:    +49 331-288 1277
+E-mail:    <A HREF="https://lists.berlios.de/mailman/listinfo/latexdiff-users">tilmann at gfz-potsdam.de</A>
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000002.html">[Latexdiff-users] textual circumflex accents, not for superscript
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/latexdiff-users">More information about the Latexdiff-users
+mailing list</a><br>
+</body></html>
